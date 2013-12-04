@@ -1,0 +1,9 @@
+# MacOSX
+.DS_Store
+
+# vim
+*.swp
+
+# node
+npm-debug.log
+node_modules

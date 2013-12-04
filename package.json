@@ -1,0 +1,26 @@
+{
+  "name": "node-resource-pool",
+  "version": "0.0.1",
+  "description": "Resource pool class for node.",
+  "author": "Mario Freitas <imkira@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imkira/node-resource-pool"
+  },
+  "license": "MIT",
+  "keywords": [
+    "resource",
+    "pool"
+  ],
+  "main": "lib/pool.js",
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "mocha --recursive --check-leaks --ui bdd --reporter spec test"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  }
+}
