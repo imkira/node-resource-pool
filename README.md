@@ -1,6 +1,8 @@
 node-resource-pool
 ==================
 
+[![Build Status](https://travis-ci.org/imkira/node-resource-pool.png)](https://travis-ci.org/imkira/node-resource-pool)
+
 This is a resource pool implementation for node.
 You can use it to handle pool connections, files, and other kinds of resources
 for which creation is an expensive operation.
