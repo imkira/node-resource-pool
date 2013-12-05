@@ -9,7 +9,7 @@ for which creation is an expensive operation.
 
 ## Requirements
 
-* node (tested on 0.6.x and above but it should work previous versions too).
+* node (tested on 0.6.x and above but it should work on previous versions too).
 
 ## Installation
 
@@ -91,14 +91,14 @@ myPool = resourcePool.create({
     // due to long periods of failure, requests will be immediately denied.
     return 100 + Math.floor(Math.random() * 900);
   },
-  min: 5, // minimum number of objects to have ready at any time (optional, default: 0)
-  max: 500, // maximum number of objects to have ready at any time (optional, default: unlimited)
+  min: 5, // minimum number of resources to have ready at any time (required, default: 0)
+  max: 500, // maximum number of resources handle (required, default: 1024)
   maxCreating: 100, // maximum number of resources in creation-pending state to handle (optional, default: unlimited)
   maxRequests: 1000, // maximum number of (unserved) waiting requests to queue, above which requests are automatically denied (optional, default: unlimited)
   acquireTimeout: 5000, // default timeout to wait for acquire (optional, default: unlimited)
   idleTimeout: 60000, // specify time after which unused (idle) resources get automatically destroyed (optional, default: disabled)
   idleCheckInterval: 1000, // interval used for checking whether a given resource is idle or not (optional, default: 1000)
-  expireTimeout: 300000, // specify the timer that is placed on a given resource when it is created; if resource is not being used and this time is reached the object is automatically destroyed (optional, default: disabled)
+  expireTimeout: 300000, // specify the timer that is placed on a given resource when it is created; if resource is not being used and this time is reached the resource is automatically destroyed (optional, default: disabled)
   expireCheckInterval: 1000 // interval used for checking whether a given resource is expired or not (optional, default: 1000)
 });
 
