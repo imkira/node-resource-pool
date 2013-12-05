@@ -9,7 +9,7 @@ for which creation is an expensive operation.
 
 ## Requirements
 
-* node (tested on 0.10.x and above but it should work on any previous version of node).
+* node (tested on 0.6.x and above but it should work previous versions too).
 
 ## Installation
 
