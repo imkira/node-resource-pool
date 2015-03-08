@@ -14,13 +14,16 @@
   ],
   "main": "lib/pool.js",
   "engines": {
-    "node": "*"
+    "node": ">= 0.6"
   },
   "scripts": {
     "test": "mocha --recursive --check-leaks --ui bdd --reporter spec test"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "mocha": "^2.2.0",
+    "should": "^5.1.0",
+    "istanbul": "^0.3.7",
+    "coveralls": "^2.11.2",
+    "mocha-lcov-reporter": "0.0.2"
   }
 }
