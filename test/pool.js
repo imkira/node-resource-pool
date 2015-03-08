@@ -256,8 +256,9 @@ describe('Pool', function() {
     it('should handle heavy load', function(done) {
       var pool = createPool({max: 1000}, 0);
       var callCount = 0;
+      this.timeout(5000);
       for (var i = 0; i < 10000; ++i) {
-        pool.acquire({timeout: 1000}, function(err, resource) {
+        pool.acquire({timeout: 3000}, function(err, resource) {
           ++callCount;
           should.not.exist(err);
           should.exist(resource);
@@ -271,7 +272,7 @@ describe('Pool', function() {
           should.strictEqual(callCount, 10000);
           done();
         });
-      }, 1000);
+      }, 4500);
     });
 
     it('should cap resource creation under heavy load', function(done) {
@@ -303,7 +304,7 @@ describe('Pool', function() {
           should.strictEqual(callCount, 1000);
           done();
         });
-      }, 1300);
+      }, 1000);
     });
   });
 
