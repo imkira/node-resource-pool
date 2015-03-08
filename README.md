@@ -15,13 +15,13 @@ for which creation is an expensive operation.
 
 In your package.json's dependencies add:
 
-```
+```shell
 "node-resource-pool": "git://github.com/imkira/node-resource-pool"
 ```
 
 or simply type from the command line:
 
-```
+```shell
 npm install git://github.com/imkira/node-resource-pool
 ```
 
@@ -32,14 +32,18 @@ your package.json file.
 
 Below is an example on how to use node-resource-pool with node-mysql.
 
-```
+### Initialization
+
+```javascript
 var resourcePool = require('node-resource-pool');
 var mysql = require('mysql');
 
 var myPool = null;
 
 myPool = resourcePool.create({
-  create: function(done) { // callback for creating a resource (required)
+
+  // callback for creating a resource (required)
+  create: function(done) {
     var connection = mysql.createConnection({
       host : 'localhost',
       user : 'root',
@@ -62,7 +66,9 @@ myPool = resourcePool.create({
     // done accepts error, resourceValue
     done(null, connection);
   },
-  destroy: function(connection, done) { // callback for destroying a resource (required)
+
+  // callback for destroying a resource (required)
+  destroy: function(connection, done) {
     // done does not accept parameters but needs to be called
     try {
       connection.destroy();
@@ -71,14 +77,20 @@ myPool = resourcePool.create({
     }
     done();
   },
-  validate: function(resource) { // callback for validating a resource (optional)
+
+  // callback for validating a resource (optional)
+  validate: function(resource) {
     // should return true if resource is valid, or false otherwise
     return ((resource) && (resource.value) && (resource.value._isValid === true));
   },
-  compare: function(connection1, connection2) { // callback for comparing resources (optional)
+
+  // callback for comparing resources (optional)
+  compare: function(connection1, connection2) {
     return (connection1 === connection2);
   },
-  backoff: function() { // function that returns the delay time to be placed on resource creation failure (optional)
+
+  // function that returns the delay time to be placed on resource creation failure (optional)
+  backoff: function() {
     // Delays resource creation failure by a time between 100 and 1000 milliseconds.
     // If an error peak happens, backoff time will temporarily limit the rate at which requets are served.
     // For instance, assume you have a pool that has 0 free resources and that you are currently disconnected
@@ -91,56 +103,57 @@ myPool = resourcePool.create({
     // due to long periods of failure, requests will be immediately denied.
     return 100 + Math.floor(Math.random() * 900);
   },
-  min: 5, // minimum number of resources to have ready at any time (required, default: 0)
-  max: 500, // maximum number of resources handle (required, default: 1024)
-  maxCreating: 100, // maximum number of resources in creation-pending state to handle (optional, default: unlimited)
-  maxRequests: 1000, // maximum number of (unserved) waiting requests to queue, above which requests are automatically denied (optional, default: unlimited)
-  acquireTimeout: 5000, // default timeout to wait for acquire (optional, default: unlimited)
-  idleTimeout: 60000, // specify time after which unused (idle) resources get automatically destroyed (optional, default: disabled)
-  idleCheckInterval: 1000, // interval used for checking whether a given resource is idle or not (optional, default: 1000)
-  expireTimeout: 300000, // specify the timer that is placed on a given resource when it is created; if resource is not being used and this time is reached the resource is automatically destroyed (optional, default: disabled)
-  expireCheckInterval: 1000 // interval used for checking whether a given resource is expired or not (optional, default: 1000)
+
+  // minimum number of resources to have ready at any time (required, default: 0)
+  min: 5,
+
+  // maximum number of resources handle (required, default: 1024)
+  max: 500,
+
+  // maximum number of resources in creation-pending state to handle (optional, default: unlimited)
+  maxCreating: 100,
+
+  // maximum number of (unserved) waiting requests to queue, above which requests are automatically denied (optional, default: unlimited)
+  maxRequests: 1000,
+
+  // default timeout to wait for acquire (optional, default: unlimited)
+  acquireTimeout: 5000,
+
+  // specify time after which unused (idle) resources get automatically destroyed (optional, default: disabled)
+  idleTimeout: 60000,
+
+  // interval used for checking whether a given resource is idle or not (optional, default: 1000)
+  idleCheckInterval: 1000,
+
+  // specify the timer that is placed on a given resource when it is created; if resource is not being used and this time is reached the resource is automatically destroyed (optional, default: disabled)
+  expireTimeout: 300000,
+
+  // interval used for checking whether a given resource is expired or not (optional, default: 1000)
+  expireCheckInterval: 1000
 });
 
+### Acquiring/Releasing Resources
+
+```javascript
 myPool.acquire(function(err, connection) {
   if (err) {
-    console.log('error', err);
+    console.error(err);
   }
   else {
-    console.log('resource acquired');
     // do someting with connection
-    setTimeout(function() {
-      console.log('we dont need this resource anymore, release it to the pool');
-      myPool.release(connection);
-    }, 1000);
+    // ...
+    // finally release the connection
+    myPool.release(connection);
   }
 });
+```
 
-myPool.acquire(function(err, connection) {
-  if (err) {
-    console.log('error', err);
-  }
-  else {
-    console.log('resource acquired');
-    // if some error happens with the connection
-    setTimeout(function() {
-      // For instance, assume there was a problem with the connection and you
-      // want to destroy it, rather than releasing it to the pool and getting
-      // re-acquired.
-      console.log('some error happened, let us destroy this resource');
-      myPool.destroy(connection);
-    }, 1000);
-  }
-});
+### Destroying the Pool
 
-// drain cancels unserved requests, so we wait 1 second before doing so or the
-// previous acquire is cancelled.
-setTimeout(function() {
-  console.log('start draining');
-  myPool.drain(function() {
+```javascript
+myPool.drain(function() {
     console.log('finished draining');
-  });
-}, 1000);
+    });
 ```
 
 All times are interpreted in milliseconds.
