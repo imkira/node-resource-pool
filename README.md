@@ -2,6 +2,7 @@ node-resource-pool
 ==================
 
 [![Build Status](https://travis-ci.org/imkira/node-resource-pool.png)](https://travis-ci.org/imkira/node-resource-pool)
+[![Coverage Status](https://coveralls.io/repos/imkira/node-resource-pool/badge.svg?branch=master)](https://coveralls.io/r/imkira/node-resource-pool?branch=master)
 
 This is a resource pool implementation for node.
 You can use it to handle pool connections, files, and other kinds of resources

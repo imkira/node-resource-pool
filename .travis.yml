@@ -8,6 +8,11 @@ node_js:
   - "0.11"
   - "0.12"
 
+before_install:
+  - if [[ `node --version` == *v0.6* ]]; then npm conf set strict-ssl false; fi
+  - if [[ `node --version` == *v0.8* ]]; then npm install -g npm@1.4.28; fi
+  - if [[ `node --version` == *v0.9* ]]; then npm install -g npm@1.4.28; fi
+
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
 
