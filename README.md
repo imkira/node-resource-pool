@@ -132,6 +132,7 @@ myPool = resourcePool.create({
   // interval used for checking whether a given resource is expired or not (optional, default: 1000)
   expireCheckInterval: 1000
 });
+```
 
 ### Acquiring/Releasing Resources
 
